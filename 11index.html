@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Simulador de Compra</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .card {
+      background: rgba(0,0,0,0.6);
+      padding: 25px;
+      border-radius: 15px;
+      width: 320px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      animation: fadeIn 0.6s ease;
+    }
+
+    h2 {
+      margin-bottom: 15px;
+    }
+
+    select, button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+    }
+
+    select {
+      background: #fff;
+      color: #000;
+    }
+
+    button {
+      background: #00f2ea;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .status {
+      margin-top: 15px;
+      min-height: 20px;
+    }
+
+    .loader {
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(255,255,255,0.3);
+      border-top: 4px solid #00f2ea;
+      border-radius: 50%;
+      margin: 15px auto;
+      animation: spin 1s linear infinite;
+    }
+
+    .success {
+      font-size: 18px;
+      color: #00ff9c;
+      animation: pop 0.6s ease;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes pop {
+      0% { transform: scale(0.7); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h2>Comprar Monedas</h2>
+
+  <select id="monedas">
+    <option value="">Selecciona monedas</option>
+    <option value="70">70 Monedas</option>
+    <option value="350">350 Monedas</option>
+    <option value="700">700 Monedas</option>
+    <option value="1400">1400 Monedas</option>
+  </select>
+
+  <button id="comprar">Comprar</button>
+
+  <div class="status" id="status"></div>
+</div>
+
+<script>
+  const btn = document.getElementById("comprar");
+  const monedas = document.getElementById("monedas");
+  const status = document.getElementById("status");
+
+  btn.addEventListener("click", () => {
+    if (!monedas.value) {
+      status.innerHTML = "⚠️ Selecciona una cantidad válida";
+      return;
+    }
+
+    btn.disabled = true;
+    status.innerHTML = `<div class="loader"></div><div>Procesando compra...</div>`;
+
+    // Simulación de proceso
+    setTimeout(() => {
+      status.innerHTML = `
+        <div class="success">
+          ✅ Compra completada<br>
+          ${monedas.value} monedas agregadas
+        </div>
+      `;
+      btn.disabled = false;
+    }, 2500);
+  });
+</script>
+
+</body>
+</html>
