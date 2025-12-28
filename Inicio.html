@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Monedas Virtuales</title>
+
+<style>
+:root{
+  --bg:#0b0b0f;
+  --card:#15151c;
+  --primary:#00f2ea;
+  --accent:#ff0050;
+  --text:#ffffff;
+  --muted:#9b9b9b;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:radial-gradient(circle at top, #1a1a23, var(--bg));
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
+  color:var(--text);
+}
+
+.app{
+  width:360px;
+  background:var(--card);
+  border-radius:24px;
+  padding:20px;
+  box-shadow:0 20px 40px rgba(0,0,0,.6);
+  animation:fade .6s ease;
+}
+
+.header{
+  text-align:center;
+  font-weight:600;
+  font-size:18px;
+  margin-bottom:15px;
+}
+
+.pack{
+  background:#1e1e27;
+  border-radius:14px;
+  padding:14px;
+  margin-bottom:12px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  cursor:pointer;
+  transition:.25s;
+}
+
+.pack:hover{
+  transform:scale(1.02);
+  box-shadow:0 0 0 1px var(--primary);
+}
+
+.pack span{
+  font-size:16px;
+}
+
+.pack small{
+  color:var(--muted);
+}
+
+button{
+  width:100%;
+  margin-top:10px;
+  padding:14px;
+  border-radius:14px;
+  border:none;
+  font-size:16px;
+  font-weight:600;
+  background:linear-gradient(90deg,var(--primary),var(--accent));
+  color:#000;
+  cursor:pointer;
+}
+
+button:disabled{opacity:.4}
+
+.status{
+  text-align:center;
+  margin-top:15px;
+  min-height:40px;
+}
+
+.loader{
+  width:42px;
+  height:42px;
+  border:4px solid rgba(255,255,255,.2);
+  border-top:4px solid var(--primary);
+  border-radius:50%;
+  margin:10px auto;
+  animation:spin 1s linear infinite;
+}
+
+.success{
+  font-size:17px;
+  animation:pop .5s ease;
+}
+
+.coin{
+  position:fixed;
+  top:-40px;
+  font-size:24px;
+  animation:fall 1.6s ease forwards;
+}
+
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fade{from{opacity:0;transform:scale(.95)}to{opacity:1}}
+@keyframes pop{from{opacity:0;transform:scale(.6)}to{opacity:1}}
+@keyframes fall{
+  to{transform:translateY(120vh) rotate(360deg);opacity:0}
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+  <div class="header">Monedas Virtuales</div>
+
+  <div class="pack" data-value="70">
+    <span>70 Monedas</span>
+    <small>Popular</small>
+  </div>
+
+  <div class="pack" data-value="350">
+    <span>350 Monedas</span>
+    <small>Mejor valor</small>
+  </div>
+
+  <div class="pack" data-value="700">
+    <span>700 Monedas</span>
+    <small>Recomendado</small>
+  </div>
+
+  <div class="pack" data-value="1400">
+    <span>1400 Monedas</span>
+    <small>Premium</small>
+  </div>
+
+  <button id="buy">Continuar</button>
+
+  <div class="status" id="status"></div>
+</div>
+
+<script>
+let selected=null;
+const packs=document.querySelectorAll(".pack");
+const btn=document.getElementById("buy");
+const status=document.getElementById("status");
+
+packs.forEach(p=>{
+  p.onclick=()=>{
+    packs.forEach(x=>x.style.boxShadow="none");
+    p.style.boxShadow="0 0 0 2px #00f2ea";
+    selected=p.dataset.value;
+  }
+});
+
+btn.onclick=()=>{
+  if(!selected){
+    status.textContent="Selecciona un paquete";
+    return;
+  }
+
+  btn.disabled=true;
+  status.innerHTML='<div class="loader"></div><div>Procesando…</div>';
+
+  setTimeout(()=>{
+    coins();
+    status.innerHTML=`<div class="success">✅ ${selected} monedas agregadas</div>`;
+    btn.disabled=false;
+  },2300);
+};
+
+function coins(){
+  for(let i=0;i<14;i++){
+    const c=document.createElement("div");
+    c.className="coin";
+    c.textContent="🪙";
+    c.style.left=Math.random()*100+"vw";
+    c.style.animationDelay=(Math.random()*0.5)+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),1800);
+  }
+}
+</script>
+
+</body>
+</html>
